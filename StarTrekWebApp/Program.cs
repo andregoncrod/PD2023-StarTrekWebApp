@@ -1,7 +1,11 @@
+using StarTrekWebApp;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+AppSettings.APIUrl = builder.Configuration.GetValue<string>("APIUrl");
 
 var app = builder.Build();
 

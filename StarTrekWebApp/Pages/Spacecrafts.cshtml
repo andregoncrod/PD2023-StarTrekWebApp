@@ -4,4 +4,38 @@
 	ViewData["Title"] = "Spacecrafts";
 }
 
+@section Css {
+	<link href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/select/1.6.2/css/select.dataTables.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/datetime/1.4.1/css/dataTables.dateTime.min.css" rel="stylesheet" />
+    <link href="~/css/editor.dataTables.min.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/spacecrafts.css" rel="stylesheet" asp-append-version="true" />
+}
+
 <h1>@ViewData["Title"]</h1>
+
+@Html.AntiForgeryToken()
+<table id="dtSpacecrafts" class="display" style="width:100%">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Registry</th>
+            <th>Status</th>
+            <th>Date Status</th>
+            <th>System Date</th>
+            <th>Last Modified</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+@section Scripts {
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.6.2/js/dataTables.select.min.js"></script>
+    <script src="https://cdn.datatables.net/datetime/1.4.1/js/dataTables.dateTime.min.js"></script>
+    <script src="~/js/dataTables.editor.min.js" asp-append-version="true"></script>
+    <script src="~/js/spacecrafts.js" asp-append-version="true"></script>
+}

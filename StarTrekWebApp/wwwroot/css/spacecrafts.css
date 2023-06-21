@@ -1,0 +1,36 @@
+﻿#dtSpacecrafts_filter label {
+    color: #6cf;
+}
+
+    #dtSpacecrafts_filter label input {
+        color: white;
+    }
+
+.dataTables_length label {
+    color: #6cf;
+}
+
+    .dataTables_length label select {
+        color: black;
+        background-color: white !important;
+    }
+
+#dtSpacecrafts_info {
+    color: #6cf;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    color: #6cf !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled, .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover, .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:active {
+    color: #455580 !important;
+}
+
+button.dt-button, div.dt-button, a.dt-button, input.dt-button {
+    color: white;
+}
+
+.DTE_Header_Content {
+    line-height: 17px;
+}
