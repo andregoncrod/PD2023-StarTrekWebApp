@@ -37,8 +37,9 @@ namespace StarTrekWebApp.Pages
             string searchValue = Request.Query["search[value]"];
             int orderColumn = int.Parse(Request.Query["order[0][column]"]);
             string orderDir = Request.Query["order[0][dir]"];
+            int page = (start / length) + 1;
 
-            var spacecraftsResp = await httpHelper.Get($"{AppSettings.APIUrl}/Spacecraft/paged/{start+1}/{length}/{GetColumnNameByNumber(orderColumn)}/{orderDir}/{searchValue}");
+            var spacecraftsResp = await httpHelper.Get($"{AppSettings.APIUrl}/Spacecraft/paged/{page}/{length}/{GetColumnNameByNumber(orderColumn)}/{orderDir}/{searchValue}");
 
             SpacecraftPagedJson spacecraftsPaged = JsonSerializer.Deserialize<SpacecraftPagedJson>(spacecraftsResp);
 

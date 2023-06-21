@@ -53,6 +53,8 @@ $(document).ready(() => {
     });
 
     function formatDate(dateStr) {
+        if (dateStr == null)
+            return "";
         var date = new Date(dateStr);
         var formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1)
             .toString()
