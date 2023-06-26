@@ -1,0 +1,76 @@
+---
+- name: Install Star Trek Containers
+  hosts: all
+
+  vars:
+    sql_server_ip: "{{ hostvars[groups['sql_servers'][0]]['ansible_host'] }}"
+    web_api_ip: "{{ hostvars[groups['backends'][0]]['ansible_host'] }}"
+
+  tasks:
+    - name: Install aptitude using apt
+      apt: name=curl state=latest update_cache=yes force_apt_get=yes
+
+    - name: Install required system packages
+      shell: curl -sSL https://get.docker.com/ | sh
+      register: result
+
+    - name: Add group docker to user guest
+      user:
+        name: guest
+        groups: docker
+        append: yes
+
+    - name: Install Star Trek SQL Server container
+      become: yes
+      docker_container:
+        name: StarTrekSQLServer
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        env:
+          ACCEPT_EULA: "Y"
+          SA_PASSWORD: "PD2023SQLServerExpress"
+          MSSQL_PID: "Express"
+        ports:
+          - "1433:1433"
+        volumes:
+          - sqlvolume:/var/opt/mssql
+        state: started
+      when: "'sql_servers' in group_names"
+
+    - name: Install Star Trek Synchronization Service container
+      become: yes
+      docker_container:
+        name: StarTrekSynchronizationService
+        image: andregoncrod/startreksynchronizationservice:0c3e889
+        env:
+          ASPNETCORE_ENVIRONMENT: "Production"
+          ConnectionStrings:DefaultConnection: "Server={{ sql_server_ip }};Database=StarTrek;User Id=sa;password=PD2023SQLServerExpress;TrustServerCertificate=True;Trusted_Connection=False;"
+        state: started
+      when: "'backends' in group_names"
+
+    - name: Install Star Trek Web API container
+      become: yes
+      docker_container:
+        name: StarTrekWebAPI
+        image: andregoncrod/startrekwebapi:cb52a0d
+        env:
+          ASPNETCORE_URLS: "http://+:80"
+          ASPNETCORE_ENVIRONMENT: "Production"
+          ConnectionStrings:DefaultConnection: "Server={{ sql_server_ip }};Database=StarTrek;User Id=sa;password=PD2023SQLServerExpress;TrustServerCertificate=True;Trusted_Connection=False;"
+        ports:
+          - "8000:80"
+        state: started
+      when: "'backends' in group_names"
+
+    - name: Install Star Trek Web App container
+      become: yes
+      docker_container:
+        name: StarTrekWebApp
+        image: andregoncrod/startrekwebapp:ac9440b
+        env:
+          ASPNETCORE_URLS: "http://+:80"
+          ASPNETCORE_ENVIRONMENT: "Production"
+          APIUrl: "http://{{ web_api_ip }}:8000/api"
+        ports:
+          - "80:80"
+        state: started
+      when: "'frontends' in group_names"

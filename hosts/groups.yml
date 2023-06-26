@@ -1,0 +1,8 @@
+[sql_servers]
+sql_server_machine
+
+[backends]
+backends_machine
+
+[frontends]
+frontends_machine
